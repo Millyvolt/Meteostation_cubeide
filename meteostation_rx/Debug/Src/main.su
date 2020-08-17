@@ -1,0 +1,2 @@
+main.c:56:5:main	40	static
+main.c:102:6:GPIO_init	4	static

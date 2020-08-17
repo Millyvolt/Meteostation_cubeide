@@ -1,0 +1,9 @@
+ssd1306.c:9:13:Delay	24	static
+ssd1306.c:18:6:Displ_init	16	static
+ssd1306.c:44:6:SSD1306_clear_page	24	static
+ssd1306.c:102:6:Displ_clear	16	static
+ssd1306.c:139:6:Send_data_dspl	16	static
+ssd1306.c:146:6:X_addr_dspl	24	static
+ssd1306.c:158:6:Y_addr_dspl	16	static
+ssd1306.c:165:6:ssd1306_write	24	static
+ssd1306.c:228:6:myputc2	24	static

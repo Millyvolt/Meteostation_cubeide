@@ -1,0 +1,6 @@
+bme280.c:27:9:BME280_tmpr	32	static
+bme280.c:51:9:BME280_hum	32	static
+bme280.c:80:10:BME280_press	80	static
+bme280.c:121:6:BME280_init	24	static
+bme280.c:137:6:BME280_reset	16	static
+bme280.c:145:6:BME280_read	32	static

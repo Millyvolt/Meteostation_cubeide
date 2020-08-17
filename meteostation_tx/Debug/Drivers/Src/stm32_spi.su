@@ -1,0 +1,2 @@
+stm32_spi.c:8:6:SPI_init	16	static
+stm32_spi.c:44:7:SPI_master	32	static

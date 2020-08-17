@@ -1,0 +1,4 @@
+stm32_i2c.c:9:13:Delay	24	static
+stm32_i2c.c:15:6:I2C_init	16	static
+stm32_i2c.c:55:6:I2C_write_1b	32	static
+stm32_i2c.c:140:6:I2C_read_n_b	40	static

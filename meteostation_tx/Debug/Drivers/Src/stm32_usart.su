@@ -1,0 +1,5 @@
+stm32_usart.c:9:6:USART_init	16	static
+stm32_usart.c:79:6:USART_Tx_byte	16	static
+stm32_usart.c:98:6:USART_Tx	24	static
+stm32_usart.c:105:6:USART_Rx	24	static
+stm32_usart.c:154:6:Debug_out	16	static
