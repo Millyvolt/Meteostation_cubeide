@@ -28,15 +28,15 @@
 
 
 
-volatile uint8_t buf_info[50], cnt_info=0;
+volatile uint8_t buf_info[100], cnt_info=0;
 
 
-void GPIO_init(void);
+void LED_init(void);
 
 
 /*			ToDo
  *
- * очистить флаги прерываний перед инициализацией юарта
+ * (очистить флаги прерываний перед инициализацией юарта)
  *
  *
  *
@@ -46,7 +46,7 @@ void GPIO_init(void);
 
 int main(void)
 {
-	GPIO_init();
+	LED_init();
 	delay_init(TIM2);
 	hc12_init(USART_1);
 
@@ -54,16 +54,19 @@ int main(void)
 	for(;;)
 	{
 		GPIOC->BSRR |= LED_green_set;
-		delay_ms(1000);
+		delay_ms(500);
 		GPIOC->BSRR |= LED_green_reset;
-		delay_ms(1000);
+		delay_ms(500);
 
-		hc12_info(USART_1);
+//		hc12_info(USART_1);
+//		sprintf(buffer, "%ld.%ld C \n", T / 100, (uint32_t)T % 100);
+		USART_Tx(USART_1, (uint8_t*)"hello");
+//		delay_ms(40);
 	}
 }
 
 
-void GPIO_init(void)
+void LED_init(void)
 {
 	//configure PC13 on output push-pull 2MHz (blinking LED)
 	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
@@ -87,6 +90,9 @@ void USART1_IRQHandler()
 	if(t)			//received symbol not null
 		buf_info[cnt_info++] = t;
 	else
+		cnt_info = 0;
+
+	if(cnt_info > 100)
 		cnt_info = 0;
 
 }

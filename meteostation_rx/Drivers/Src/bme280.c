@@ -10,11 +10,7 @@ uint8_t buf_calib01_25[25];
 uint8_t buf_calib26_32[7];
 
 
-int32_t T, H;
-uint32_t P;
-
-
-/*				To do:
+/*				Todo
  *		Reading tmpr, hum and pressure by one I2C transaction;
  *
  *
@@ -144,11 +140,11 @@ void BME280_reset(I2C_num I2C_number)
 
 void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* ppress)
 {
-	delay_ms(100); //without delays not working
+	delay_ms(1); //without delays not working
 	I2C_read_n_b(I2C_number, BME280_ADDRESS, PRESS_MSB, 8, buf_adc);
-	delay_ms(100);
+	delay_ms(1);
 	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_01, 25, buf_calib01_25);
-	delay_ms(100);
+	delay_ms(1);
 	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_26, 8, buf_calib26_32);
 	
 #ifdef DEBUG_MODE
@@ -177,12 +173,6 @@ void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* pp
 	*ptmpr = BME280_tmpr();
 	*phum = BME280_hum();
 	*ppress = BME280_press();
-	T = *ptmpr;
-	H = *phum;
-	P = *ppress;
-
-
-	
 }
 
 

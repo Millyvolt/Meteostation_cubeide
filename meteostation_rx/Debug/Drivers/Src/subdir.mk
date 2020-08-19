@@ -7,6 +7,7 @@ C_SRCS += \
 ../Drivers/Src/bme280.c \
 ../Drivers/Src/delay.c \
 ../Drivers/Src/fonts.c \
+../Drivers/Src/hc_12.c \
 ../Drivers/Src/ssd1306.c \
 ../Drivers/Src/stm32_i2c.c \
 ../Drivers/Src/stm32_rcc.c \
@@ -18,6 +19,7 @@ OBJS += \
 ./Drivers/Src/bme280.o \
 ./Drivers/Src/delay.o \
 ./Drivers/Src/fonts.o \
+./Drivers/Src/hc_12.o \
 ./Drivers/Src/ssd1306.o \
 ./Drivers/Src/stm32_i2c.o \
 ./Drivers/Src/stm32_rcc.o \
@@ -29,6 +31,7 @@ C_DEPS += \
 ./Drivers/Src/bme280.d \
 ./Drivers/Src/delay.d \
 ./Drivers/Src/fonts.d \
+./Drivers/Src/hc_12.d \
 ./Drivers/Src/ssd1306.d \
 ./Drivers/Src/stm32_i2c.d \
 ./Drivers/Src/stm32_rcc.d \
@@ -44,6 +47,8 @@ Drivers/Src/delay.o: ../Drivers/Src/delay.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/delay.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 Drivers/Src/fonts.o: ../Drivers/Src/fonts.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/fonts.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
+Drivers/Src/hc_12.o: ../Drivers/Src/hc_12.c
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/hc_12.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 Drivers/Src/ssd1306.o: ../Drivers/Src/ssd1306.c
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_rx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/ssd1306.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 Drivers/Src/stm32_i2c.o: ../Drivers/Src/stm32_i2c.c

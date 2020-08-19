@@ -9,6 +9,7 @@
 
 
 #define		STM32F103C8T6
+#define		DEBUG_ON
 
 #define SET_pin_set		GPIO_BSRR_BS11
 #define SET_pin_reset	GPIO_BSRR_BR11

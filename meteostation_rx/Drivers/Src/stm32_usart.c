@@ -2,11 +2,6 @@
 #include "stm32_usart.h"
 
 
-void	USART_init(USART_num USART_number);
-void	USART_Tx(USART_num USART_number, uint8_t* buf);
-void	USART_Tx_byte(USART_num USART_number, uint8_t byte);
-void	USART_Rx(USART_num USART_number);
-
 void	Debug_out(unsigned char c);
 
 

@@ -23,6 +23,7 @@
 #include "bme280.h"
 #include "xprintf.h"
 #include "delay.h"
+#include "hc_12.h"
 
 
 
@@ -32,7 +33,10 @@
 
 
 
-void	GPIO_init(void);
+volatile uint8_t buf_info[100], cnt_info=0;
+
+
+void	LED_init(void);
 
 
 uint8_t	x_adr, y_adr;
@@ -43,43 +47,36 @@ uint32_t P;
 
 /*				ToDo
  *
- *		äîäåëàòü delay()
- *
- *
- *
- *
- *
  *
  */
+
+//HC-SR04
+//PA8 - output push-pull 10MHz (Trigger)
+//	GPIOA->CRH |= GPIO_CRH_MODE8_0;
+//	GPIOA->CRH &= ~GPIO_CRH_CNF8_0;
+//	//PA9 - input pull down (Echo)
+//	GPIOA->CRH &= ~GPIO_CRH_CNF8_0;
+//	GPIOA->CRH |= GPIO_CRH_CNF8_1;
 
 
 int main(void)
 {
-
-	GPIO_init();
+	LED_init();
 	I2C_init(I2C_1);
-	delay_init(TIM2);
-
-#ifdef RECEIVER
-
 	I2C_init(I2C_2);
+	delay_init(TIM2);
 	delay_ms(100);
 	BME280_init(I2C_2);
-
 	Displ_init(I2C_1);
-	Displ_clear(I2C_1);
+	hc12_init(USART_1);
 
+	Displ_clear(I2C_1);
 
 	x_adr = 0;
 	y_adr = 7;
 	X_addr_dspl(x_adr, I2C_1);
 	Y_addr_dspl(y_adr, I2C_1);
-	ssd1306_write(I2C_1, (uint8_t*)"     ÓËÈ×ÍÛÉ  ÄÀÒ×ÈÊ");
-
-
-#endif	//RECEIVER
-
-
+	ssd1306_write(I2C_1, (uint8_t*)"    ÊÎÌÍÀÒÍÛÉ  ÄÀÒ×ÈÊ");
 
 
 	for(;;)
@@ -95,29 +92,43 @@ int main(void)
 				H / 1024, H % 1024 / 10, (int)(P * 3 / 102400), (int)(P * 3 % 102400 / 1000));
 		GPIOB->BSRR |= LED_red_off;
 		delay_ms(1000);
-
+//		hc12_info(USART_1);
 	}
 }
 
-void	GPIO_init(void)
+void	LED_init(void)
 {
-	//PA11 - output push-pull 10MHz (SET_pin) for HC-12
-	GPIOA->CRH &= ~GPIO_CRH_CNF11_0;
-	GPIOA->CRH |= GPIO_CRH_MODE11_0;
-	GPIOA->BSRR |= SET_pin_set;
-
-	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN | RCC_APB2ENR_IOPAEN;
+	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
 	//configure PB12 on output push-pull 2MHz (blinking LED)
 	GPIOB->CRH |= GPIO_CRH_MODE12_1;
 	GPIOB->CRH &= ~GPIO_CRH_CNF12_0;
-
-	//HC-SR04
-	//PA8 - output push-pull 10MHz (Trigger)
-//	GPIOA->CRH |= GPIO_CRH_MODE8_0;
-//	GPIOA->CRH &= ~GPIO_CRH_CNF8_0;
-//	//PA9 - input pull down (Echo)
-//	GPIOA->CRH &= ~GPIO_CRH_CNF8_0;
-//	GPIOA->CRH |= GPIO_CRH_CNF8_1;
 }
+
+void USART1_IRQHandler()
+{
+	uint8_t t;
+
+	//need to check receive flag in status register
+
+	#ifdef	DEBUG_ON
+	t = USART1->SR;		//for clear ORE flag in status register
+	#endif //DEBUG_ON
+
+	t = USART1->DR;
+
+	#ifdef	DEBUG_ON
+//	USART_Tx_byte(USART_2, t);
+	#endif //DEBUG_ON
+
+	if(t)			//received symbol not null
+		buf_info[cnt_info++] = t;
+	else
+		cnt_info = 0;
+
+	if(cnt_info > 100)
+		cnt_info = 0;
+
+}
+
 
 

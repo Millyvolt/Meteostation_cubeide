@@ -3,6 +3,7 @@
 "Drivers/Src/bme280.o"
 "Drivers/Src/delay.o"
 "Drivers/Src/fonts.o"
+"Drivers/Src/hc_12.o"
 "Drivers/Src/ssd1306.o"
 "Drivers/Src/stm32_i2c.o"
 "Drivers/Src/stm32_rcc.o"
