@@ -47,7 +47,6 @@ uint32_t P;
 /*				ToDo
  *
  *
- *		íàéòè âñå I2C_num I2C_number, I2C_1, I2C2
  *
  */
 
@@ -77,14 +76,14 @@ int main(void)
 	y_adr = 7;
 	X_addr_dspl(x_adr, I2C1);
 	Y_addr_dspl(y_adr, I2C1);
-	ssd1306_write(I2C_1, (uint8_t*)"    êîìíàòíûé  ÄÀÒ×ÈÊ");
+	ssd1306_write(I2C1, (uint8_t*)"    ÊÎÌÍÀÒÍÛÉ  ÄÀÒ×ÈÊ");
 
 
 	for(;;)
 	{
 		GPIOB->BSRR |= LED_red_on;
 		delay_ms(1000);
-		BME280_read(I2C_2, &T, &H, &P);
+		BME280_read(I2C2, &T, &H, &P);
 		x_adr = 0;
 		y_adr = 0;
 		X_addr_dspl(x_adr, I2C1);

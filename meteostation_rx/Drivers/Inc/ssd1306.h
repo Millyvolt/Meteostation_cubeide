@@ -32,7 +32,7 @@ void	Displ_clear(I2C_TypeDef* I2C);
 void	Send_data_dspl(uint8_t data, I2C_TypeDef* I2C);
 void	X_addr_dspl(uint8_t x_address, I2C_TypeDef* I2C);
 void	Y_addr_dspl(uint8_t y_address, I2C_TypeDef* I2C);
-void	ssd1306_write(I2C_num I2C_number, uint8_t *string);
+void	ssd1306_write(I2C_TypeDef* I2C, uint8_t *string);
 void	myputc2(uint8_t symbol);
 
 

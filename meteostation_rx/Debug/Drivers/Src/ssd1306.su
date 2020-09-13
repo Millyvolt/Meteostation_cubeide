@@ -6,4 +6,4 @@ ssd1306.c:128:6:Send_data_dspl	16	static
 ssd1306.c:135:6:X_addr_dspl	24	static
 ssd1306.c:147:6:Y_addr_dspl	16	static
 ssd1306.c:154:6:ssd1306_write	24	static
-ssd1306.c:211:6:myputc2	24	static
+ssd1306.c:199:6:myputc2	24	static

@@ -47,10 +47,6 @@ void	I2C_write_1b(I2C_TypeDef* I2C, uint8_t address_slv, uint8_t address_reg, ui
 	#endif	//DEBUG_I2C
 		I2C->CR1 &= ~I2C_CR1_SWRST;
 		//delay
-//		if(I2C==I2C1)
-//			I2C_init(I2C1);
-//		else if(I2C==I2C2)
-//			I2C_init(I2C2);
 		I2C_init(I2C);
 		delay_ms(10);
 	}
@@ -71,169 +67,68 @@ void	I2C_write_1b(I2C_TypeDef* I2C, uint8_t address_slv, uint8_t address_reg, ui
 	while (!(I2C->SR1 & I2C_SR1_BTF)) ;
 
 	I2C->CR1 |= I2C_CR1_STOP;
-
-//		//check BUSY
-//		while(I2C2->SR2 & I2C_SR2_BUSY)
-//		{
-//			#ifdef	DEBUG_MI2C
-//			USART_Tx(USART_2, (uint8_t*)" I2C2 (write_1b) busy ");
-//			//delay here
-//			#endif	//DEBUG_I2C
-//
-//			I2C2->CR1 |= I2C_CR1_SWRST;
-//			//delay
-//			delay_ms(10);
-//			I2C2->CR1 &= ~I2C_CR1_SWRST;
-//			//delay
-//			I2C_init(I2C2);
-//			delay_ms(10);
-//		}
-//
-//		I2C2->CR1 |= I2C_CR1_START;
-//		while (!(I2C2->SR1 & I2C_SR1_SB)) ;
-//		I2C2->DR = address_slv;
-//
-//		while (!(I2C2->SR1 & I2C_SR1_ADDR)) ;
-//		tmp32 = I2C2->SR1; 	//clear
-//		(void)	tmp32; 		//ADDR
-//		tmp32 = I2C2->SR2; 	//flag
-//		(void)	tmp32; 		//
-//
-//		I2C2->DR = address_reg;
-//		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-//		I2C2->DR = data;
-//		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-//
-//		I2C2->CR1 |= I2C_CR1_STOP;
-
 }
 
-void	I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t num_of_bytes, uint8_t* buf_Rx)
+void	I2C_read_n_b(I2C_TypeDef* I2C, uint8_t address_slv, uint8_t address_1st_reg, uint8_t num_of_bytes, uint8_t* buf_Rx)
 {
 	uint8_t adr, j=0;
 	uint32_t tmp32;
 	
-	switch (I2C_number)
+	//check BUSY
+	while(I2C->SR2 & I2C_SR2_BUSY)
 	{
-	case I2C_1:
-		//check BUSY
-		while(I2C1->SR2 & I2C_SR2_BUSY)
-		{
-		#ifdef	DEBUG_I2C
-			USART_Tx(USART_2, (uint8_t*)" I2C1 (read_n_b) is busy ");
-			//delay here
-		#endif	//DEBUG_I2C
-		
-			I2C1->CR1 |= I2C_CR1_SWRST;
-			//delay
-			I2C1->CR1 &= ~I2C_CR1_SWRST;
-			//delay
-			I2C_init(I2C1);
-		}
-		
-		I2C1->CR1 |= I2C_CR1_START;
-		while (!(I2C1->SR1 & I2C_SR1_SB)) ;
-		I2C1->DR = address_slv;
-		
-		while (!(I2C1->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
-		tmp32 = I2C1->SR1;  	//clear
-		(void)	tmp32;  		//ADDR
-		tmp32 = I2C1->SR2;  	//flag
-		(void)	tmp32;  		//
-		
-		I2C1->DR = address_1st_reg;
-		while (!(I2C1->SR1 & I2C_SR1_BTF)) ;
-		I2C1->CR1 |= I2C_CR1_START;
-		while (!(I2C1->SR1 & I2C_SR1_SB)) ;
-		
-		adr = address_slv | 0b00000001; 			//address | receive bit = 1
-		I2C1->DR = adr;
-		
-		while (!(I2C1->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
-		tmp32 = I2C1->SR1;   	//clear
-		(void)	tmp32;   		//ADDR
-		tmp32 = I2C1->SR2;   	//flag
-		(void)	tmp32;   		//
-		
-		for(uint8_t i = num_of_bytes ; i > 3 ; i--, j++)
-		{
-			while (!(I2C1->SR1 & I2C_SR1_RXNE)) ;
-			buf_Rx[j] = I2C1->DR;
-		}
-		
-		while (!(I2C1->SR1 & I2C_SR1_RXNE)) ;
-		while (!(I2C1->SR1 & I2C_SR1_BTF)) ;
-		I2C1->CR1 &= ~I2C_CR1_ACK;		//no acknowledge
-		buf_Rx[j++] = I2C1->DR;
-		I2C1->CR1 |= I2C_CR1_STOP;
-		buf_Rx[j++] = I2C1->DR;
-		while (!(I2C1->SR1 & I2C_SR1_RXNE)) ;
-		buf_Rx[j] = I2C1->DR;
-		
-		I2C1->CR1 |= I2C_CR1_ACK;		//acknowledge
-		break;
-		
-	case I2C_2:
-		//check BUSY
-		while(I2C2->SR2 & I2C_SR2_BUSY)
-		{
-			#ifdef	DEBUG_I2C
-			USART_Tx(USART_2, (uint8_t*)" I2C2 (read_n_b) busy ");
-			//delay here
-			#endif	//DEBUG_I2C
-		
-			I2C2->CR1 |= I2C_CR1_SWRST;
-			//delay
-			I2C2->CR1 &= ~I2C_CR1_SWRST;
-			//delay
-			I2C_init(I2C2);
-		}
-		
-		I2C2->CR1 |= I2C_CR1_START;
-		while (!(I2C2->SR1 & I2C_SR1_SB)) ;
-		I2C2->DR = address_slv;
-		
-		while (!(I2C2->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
-		tmp32 = I2C2->SR1;   	//clear
-		(void)	tmp32;   		//ADDR
-		tmp32 = I2C2->SR2;   	//flag
-		(void)	tmp32;   		//
-		
-		I2C2->DR = address_1st_reg;
-		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-		I2C2->CR1 |= I2C_CR1_START;
-		while (!(I2C2->SR1 & I2C_SR1_SB)) ;
-		
-		adr = address_slv | 0b00000001;  			//address | receive bit = 1
-		I2C2->DR = adr;
-		
-		while (!(I2C2->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
-		tmp32 = I2C2->SR1;    	//clear
-		(void)	tmp32;    		//ADDR
-		tmp32 = I2C2->SR2;    	//flag
-		(void)	tmp32;    		//
-		
-		for(uint8_t i = num_of_bytes ; i > 3 ; i--, j++)
-		{
-			while (!(I2C2->SR1 & I2C_SR1_RXNE)) ;
-			buf_Rx[j] = I2C2->DR;
-		}
-		
-		while (!(I2C2->SR1 & I2C_SR1_RXNE)) ;
-		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-		I2C2->CR1 &= ~I2C_CR1_ACK; 		//no acknowledge
-		buf_Rx[j++] = I2C2->DR;
-		I2C2->CR1 |= I2C_CR1_STOP;
-		buf_Rx[j++] = I2C2->DR;
-		while (!(I2C2->SR1 & I2C_SR1_RXNE)) ;
-		buf_Rx[j] = I2C2->DR;
-		
-		I2C2->CR1 |= I2C_CR1_ACK; 		//acknowledge
-		break;
-		
-	default:
-		break;
+#ifdef	DEBUG_I2C
+		USART_Tx(USART_2, (uint8_t*)" I2Cx (read_n_b) is busy ");
+		//delay here
+#endif	//DEBUG_I2C
+
+		I2C->CR1 |= I2C_CR1_SWRST;
+		//delay
+		I2C->CR1 &= ~I2C_CR1_SWRST;
+		//delay
+		I2C_init(I2C);
 	}
+
+	I2C->CR1 |= I2C_CR1_START;
+	while (!(I2C->SR1 & I2C_SR1_SB)) ;
+	I2C->DR = address_slv;
+
+	while (!(I2C->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
+	tmp32 = I2C->SR1;  	//clear
+	(void)	tmp32;  		//ADDR
+	tmp32 = I2C->SR2;  	//flag
+	(void)	tmp32;  		//
+
+	I2C->DR = address_1st_reg;
+	while (!(I2C->SR1 & I2C_SR1_BTF)) ;
+	I2C->CR1 |= I2C_CR1_START;
+	while (!(I2C->SR1 & I2C_SR1_SB)) ;
+
+	adr = address_slv | 0b00000001; 			//address | receive bit = 1
+	I2C->DR = adr;
+
+	while (!(I2C->SR1 & I2C_SR1_ADDR)) ;	//need timeout?
+	tmp32 = I2C->SR1;   	//clear
+	(void)	tmp32;   		//ADDR
+	tmp32 = I2C->SR2;   	//flag
+	(void)	tmp32;   		//
+
+	for(uint8_t i = num_of_bytes ; i > 3 ; i--, j++)
+	{
+		while (!(I2C->SR1 & I2C_SR1_RXNE)) ;
+		buf_Rx[j] = I2C->DR;
+	}
+
+	while (!(I2C->SR1 & I2C_SR1_RXNE)) ;
+	while (!(I2C->SR1 & I2C_SR1_BTF)) ;
+	I2C->CR1 &= ~I2C_CR1_ACK;		//no acknowledge
+	buf_Rx[j++] = I2C->DR;
+	I2C->CR1 |= I2C_CR1_STOP;
+	buf_Rx[j++] = I2C->DR;
+	while (!(I2C->SR1 & I2C_SR1_RXNE)) ;
+	buf_Rx[j] = I2C->DR;
+
+	I2C->CR1 |= I2C_CR1_ACK;		//acknowledge
 }
 
 #endif	//STM32F103C8T6

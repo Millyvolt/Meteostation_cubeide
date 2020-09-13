@@ -138,14 +138,14 @@ void BME280_reset(I2C_TypeDef* I2C)
 
 }
 
-void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* ppress)
+void BME280_read(I2C_TypeDef* I2C, int32_t* ptmpr, int32_t* phum, uint32_t* ppress)
 {
 	delay_ms(1); //without delays not working
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, PRESS_MSB, 8, buf_adc);
+	I2C_read_n_b(I2C, BME280_ADDRESS, PRESS_MSB, 8, buf_adc);
 	delay_ms(1);
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_01, 25, buf_calib01_25);
+	I2C_read_n_b(I2C, BME280_ADDRESS, CALIB_01, 25, buf_calib01_25);
 	delay_ms(1);
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_26, 8, buf_calib26_32);
+	I2C_read_n_b(I2C, BME280_ADDRESS, CALIB_26, 8, buf_calib26_32);
 	
 #ifdef DEBUG_MODE
 	

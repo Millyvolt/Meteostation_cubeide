@@ -151,7 +151,7 @@ void Y_addr_dspl(uint8_t y_address, I2C_TypeDef* I2C)
 
 }
 
-void	ssd1306_write(I2C_num I2C_number, uint8_t *string)
+void	ssd1306_write(I2C_TypeDef* I2C, uint8_t *string)
 {
 	//I2C_write_1b(I2C_number, SSD1306_ADDRESS, WRITE_COMM, PAGE_5);
 	
@@ -159,51 +159,39 @@ void	ssd1306_write(I2C_num I2C_number, uint8_t *string)
 	
 	uint32_t tmp32;
 	
-	switch (I2C_number)
+	//check BUSY
+	while(I2C->SR2 & I2C_SR2_BUSY)
 	{
-	case I2C_1:
-		
-		//check BUSY
-		while(I2C1->SR2 & I2C_SR2_BUSY)
-		{
 #ifdef	DEBUG_I2C
-			USART_Tx(USART_2, (uint8_t*)" I2C1 (clear_page) is busy ");
-			//delay here
+		USART_Tx(USART_2, (uint8_t*)" I2Cx (clear_page) is busy ");
+		//delay here
 #endif	//DEBUG_I2C
-			I2C1->CR1 |= I2C_CR1_SWRST;
-			//delay
-			Delay(10);
-			I2C1->CR1 &= ~I2C_CR1_SWRST;
-			//delay
-			Delay(10);
-			I2C_init(I2C1);
-		}
-
-		I2C1->CR1 |= I2C_CR1_START;
-		while (!(I2C1->SR1 & I2C_SR1_SB)) ;
-		I2C1->DR = SSD1306_ADDRESS;
-
-		while (!(I2C1->SR1 & I2C_SR1_ADDR)) ;
-		tmp32 = I2C1->SR1;   	//clear
-		(void)	tmp32;   		//ADDR
-		tmp32 = I2C1->SR2;   	//flag
-		(void)	tmp32;   		//
-
-		I2C1->DR = WRITE_DATA_C0;  			//control byte - write data
-		while(!(I2C1->SR1 & I2C_SR1_BTF));
-		
-		while(*string)
-			myputc2(*string++);
-		
-		I2C1->CR1 |= I2C_CR1_STOP;
-		
-		break;
-		
-	case I2C_2:
-		break;
-	default:
-		break;
+		I2C->CR1 |= I2C_CR1_SWRST;
+		//delay
+		Delay(10);
+		I2C->CR1 &= ~I2C_CR1_SWRST;
+		//delay
+		Delay(10);
+		I2C_init(I2C);
 	}
+
+	I2C->CR1 |= I2C_CR1_START;
+	while (!(I2C->SR1 & I2C_SR1_SB)) ;
+	I2C->DR = SSD1306_ADDRESS;
+
+	while (!(I2C->SR1 & I2C_SR1_ADDR)) ;
+	tmp32 = I2C->SR1;   	//clear
+	(void)	tmp32;   		//ADDR
+	tmp32 = I2C->SR2;   	//flag
+	(void)	tmp32;   		//
+
+	I2C->DR = WRITE_DATA_C0;  			//control byte - write data
+	while(!(I2C->SR1 & I2C_SR1_BTF));
+
+	while(*string)
+		myputc2(*string++);
+
+	I2C->CR1 |= I2C_CR1_STOP;
 	
 #endif // STM32F103C8T6
 }

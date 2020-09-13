@@ -28,7 +28,7 @@
 #define	ID_VALUE		0x60
 
 
-void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* ppress);
+void BME280_read(I2C_TypeDef* I2C, int32_t* ptmpr, int32_t* phum, uint32_t* ppress);
 void BME280_init(I2C_TypeDef* I2C);
 void BME280_reset(I2C_TypeDef* I2C);
 int32_t BME280_tmpr(void);
