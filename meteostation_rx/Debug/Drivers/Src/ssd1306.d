@@ -9,7 +9,8 @@ Drivers/Src/ssd1306.o: ../Drivers/Src/ssd1306.c \
  C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc/cmsis_gcc.h \
  C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc/system_stm32f1xx.h \
  C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/stm32_i2c.h \
- C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/stm32_usart.h
+ C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/stm32_usart.h \
+ C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/delay.h
 
 C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/ssd1306.h:
 
@@ -32,3 +33,5 @@ C:/git_repos/meteostation/meteostation_rx/CMSIS/Inc/system_stm32f1xx.h:
 C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/stm32_i2c.h:
 
 C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/stm32_usart.h:
+
+C:/git_repos/meteostation/meteostation_rx/Drivers/Inc/delay.h:

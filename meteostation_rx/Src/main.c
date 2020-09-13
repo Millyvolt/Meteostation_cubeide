@@ -22,7 +22,6 @@
 #include "ssd1306.h"
 #include "bme280.h"
 #include "xprintf.h"
-#include "delay.h"
 #include "hc_12.h"
 
 
@@ -48,6 +47,8 @@ uint32_t P;
 /*				ToDo
  *
  *
+ *		íàéòè âñå I2C_num I2C_number, I2C_1, I2C2
+ *
  */
 
 //HC-SR04
@@ -62,21 +63,21 @@ uint32_t P;
 int main(void)
 {
 	LED_init();
-	I2C_init(I2C_1);
-	I2C_init(I2C_2);
+	I2C_init(I2C1);
+	I2C_init(I2C2);
 	delay_init(TIM2);
 	delay_ms(100);
-	BME280_init(I2C_2);
-	Displ_init(I2C_1);
+	BME280_init(I2C2);
+	Displ_init(I2C1);
 	hc12_init(USART_1);
 
-	Displ_clear(I2C_1);
+	Displ_clear(I2C1);
 
 	x_adr = 0;
 	y_adr = 7;
-	X_addr_dspl(x_adr, I2C_1);
-	Y_addr_dspl(y_adr, I2C_1);
-	ssd1306_write(I2C_1, (uint8_t*)"    ÊÎÌÍÀÒÍÛÉ  ÄÀÒ×ÈÊ");
+	X_addr_dspl(x_adr, I2C1);
+	Y_addr_dspl(y_adr, I2C1);
+	ssd1306_write(I2C_1, (uint8_t*)"    êîìíàòíûé  ÄÀÒ×ÈÊ");
 
 
 	for(;;)
@@ -86,8 +87,8 @@ int main(void)
 		BME280_read(I2C_2, &T, &H, &P);
 		x_adr = 0;
 		y_adr = 0;
-		X_addr_dspl(x_adr, I2C_1);
-		Y_addr_dspl(y_adr, I2C_1);
+		X_addr_dspl(x_adr, I2C1);
+		Y_addr_dspl(y_adr, I2C1);
 		xprintf("%ld.%ld C \n%ld.%ld %% \n%d.%d ìì ðò ñò  \n", T / 100, (uint32_t)T % 100, \
 				H / 1024, H % 1024 / 10, (int)(P * 3 / 102400), (int)(P * 3 % 102400 / 1000));
 		GPIOB->BSRR |= LED_red_off;

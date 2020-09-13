@@ -114,26 +114,26 @@ uint32_t BME280_press(void)
 
 }
 
-void BME280_init(I2C_num I2C_number)
+void BME280_init(I2C_TypeDef* I2C)
 {
 	uint8_t data;
 
 	//set filter and stby duration
 	data = 0b10000000;	//set  stby duration 500ms
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CONFIG_BME, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CONFIG_BME, data);
 
 	//normal mode launch
 	data = 0b00000001;	//set humidity oversampling *1
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CTRL_HUM, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CTRL_HUM, data);
 	data = 0b00100111;	//set temperature and pressure oversampling both *1 and turn on normal mode
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CTRL_MEAS, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CTRL_MEAS, data);
 
 }
 
-void BME280_reset(I2C_num I2C_number)
+void BME280_reset(I2C_TypeDef* I2C)
 {
 
-	I2C_write_1b(I2C_number, BME280_ADDRESS, BME280_RESET, RESET_COMMAND);
+	I2C_write_1b(I2C, BME280_ADDRESS, BME280_RESET, RESET_COMMAND);
 	//delay?
 
 }

@@ -3,144 +3,113 @@
 
 
 extern void	USART_Tx(USART_num USART_number, uint8_t* buf);
-//extern void	Delay(uint16_t approximately_ms);
 
 
-static void Delay(uint16_t approximately_ms)
-{
-	for (int i = 0; i < approximately_ms * 500; i++) ;
-}
 
-
-void	I2C_init(I2C_num I2C_number)
-{
 #ifdef STM32F103C8T6
-	
+
+void	I2C_init(I2C_TypeDef* I2C)
+{
 	RCC->APB2ENR |= RCC_APB2ENR_IOPBEN;
 	
-	switch (I2C_number)
+	if(I2C==I2C1)
 	{
-	case I2C_1:
 		RCC->APB1ENR |= RCC_APB1ENR_I2C1EN;
-		
 		//I2C1 GPIO config: PB6 - SCL, PB7 - SDA (alternate func open drain  50MHz)
-		GPIOB->CRL |= GPIO_CRL_MODE6 | GPIO_CRL_CNF6_1|		\
-			GPIO_CRL_MODE7 | GPIO_CRL_CNF7_1;
-		
-		I2C1->CR1 |= I2C_CR1_ACK;
-		I2C1->CR2 |= I2C_CR2_FREQ_3;		//8MHz periph clk frequency
-		I2C1->CCR |= 0x0028;			//for I2C speed 100kHz on 8MHz periph clock
-		I2C1->TRISE |= 0x0009;
-		I2C1->CR1 |= I2C_CR1_PE;			//periph enable
-		break;
-	case I2C_2:
+		GPIOB->CRL |= GPIO_CRL_MODE6 | GPIO_CRL_CNF6_1 | GPIO_CRL_MODE7 | GPIO_CRL_CNF7_1;
+	}
+	else if(I2C==I2C2)
+	{
 		RCC->APB1ENR |= RCC_APB1ENR_I2C2EN;
-		
 		//I2C1 GPIO config: PB10 - SCL, PB11 - SDA (alternate func open drain  50MHz)
 		GPIOB->CRH |= GPIO_CRH_MODE10 | GPIO_CRH_CNF10_1 | GPIO_CRH_MODE11 | GPIO_CRH_CNF11_1;
-		
-		I2C2->CR1 |= I2C_CR1_ACK;
-		I2C2->CR2 |= I2C_CR2_FREQ_3; 		//8MHz periph clk frequency
-		I2C2->CCR |= 0x0028; 			//for I2C speed 100kHz on 8MHz periph clock
-		I2C2->TRISE |= 0x0009;
-		I2C2->CR1 |= I2C_CR1_PE; 			//periph enable
-		break;
-	default:
-		break;
 	}
-	
-#endif	//STM32F103C8T6	
+
+	I2C->CR1 |= I2C_CR1_ACK;
+	I2C->CR2 |= I2C_CR2_FREQ_3;		//8MHz periph clk frequency
+	I2C->CCR |= 0x0028;			//for I2C speed 100kHz on 8MHz periph clock
+	I2C->TRISE |= 0x0009;
+	I2C->CR1 |= I2C_CR1_PE;			//periph enable
 }
 
-void	I2C_write_1b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_reg, uint8_t data)
+void	I2C_write_1b(I2C_TypeDef* I2C, uint8_t address_slv, uint8_t address_reg, uint8_t data)
 {
-#ifdef STM32F103C8T6
-	
 	uint32_t tmp32;
 	
-	switch (I2C_number)
+		//check BUSY
+	while(I2C->SR2 & I2C_SR2_BUSY)
 	{
-	case I2C_1:
-		//check BUSY
-		while(I2C1->SR2 & I2C_SR2_BUSY)
-		{
-			I2C1->CR1 |= I2C_CR1_SWRST;
-			Delay(10);
-			#ifdef	DEBUG_I2C
-			USART_Tx(USART_2, (uint8_t*)" I2C1 (write_1b) busy ");
-			//delay here
-			#endif	//DEBUG_I2C
-			I2C1->CR1 &= ~I2C_CR1_SWRST;
-			//delay
-			I2C_init(I2C_1);
-			Delay(10);
-		}
-		
-		I2C1->CR1 |= I2C_CR1_START;
-		while (!(I2C1->SR1 & I2C_SR1_SB)) ;
-		I2C1->DR = address_slv;
-		
-		while (!(I2C1->SR1 & I2C_SR1_ADDR)) ;
-		tmp32 = I2C1->SR1;	//clear
-		(void)	tmp32;		//ADDR
-		tmp32 = I2C1->SR2;	//flag
-		(void)	tmp32;		//
-		
-		I2C1->DR = address_reg;
-		while (!(I2C1->SR1 & I2C_SR1_BTF)) ;
-		I2C1->DR = data;
-		while (!(I2C1->SR1 & I2C_SR1_BTF)) ;
-		
-		I2C1->CR1 |= I2C_CR1_STOP;
-		break;
-		
-	case I2C_2:
-		//check BUSY
-		while(I2C2->SR2 & I2C_SR2_BUSY)
-		{
-			#ifdef	DEBUG_MI2C
-			USART_Tx(USART_2, (uint8_t*)" I2C2 (write_1b) busy ");
-			//delay here
-			#endif	//DEBUG_I2C
-		
-			I2C2->CR1 |= I2C_CR1_SWRST;
-			//delay
-			Delay(10);
-			I2C2->CR1 &= ~I2C_CR1_SWRST;
-			//delay
-			I2C_init(I2C_2);
-			Delay(10);
-		}
-		
-		I2C2->CR1 |= I2C_CR1_START;
-		while (!(I2C2->SR1 & I2C_SR1_SB)) ;
-		I2C2->DR = address_slv;
-		
-		while (!(I2C2->SR1 & I2C_SR1_ADDR)) ;
-		tmp32 = I2C2->SR1; 	//clear
-		(void)	tmp32; 		//ADDR
-		tmp32 = I2C2->SR2; 	//flag
-		(void)	tmp32; 		//
-		
-		I2C2->DR = address_reg;
-		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-		I2C2->DR = data;
-		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
-		
-		I2C2->CR1 |= I2C_CR1_STOP;
-		break;
-		
-	default:
-		break;
+		I2C->CR1 |= I2C_CR1_SWRST;
+		delay_ms(10);
+	#ifdef	DEBUG_I2C
+		USART_Tx(USART_2, (uint8_t*)" I2C (write_1b) busy ");
+		//delay here
+	#endif	//DEBUG_I2C
+		I2C->CR1 &= ~I2C_CR1_SWRST;
+		//delay
+//		if(I2C==I2C1)
+//			I2C_init(I2C1);
+//		else if(I2C==I2C2)
+//			I2C_init(I2C2);
+		I2C_init(I2C);
+		delay_ms(10);
 	}
-	
-#endif // STM32F103C8T6
+
+	I2C->CR1 |= I2C_CR1_START;
+	while (!(I2C->SR1 & I2C_SR1_SB)) ;
+	I2C->DR = address_slv;
+
+	while (!(I2C->SR1 & I2C_SR1_ADDR)) ;
+	tmp32 = I2C->SR1;	//clear
+	(void)	tmp32;		//ADDR
+	tmp32 = I2C->SR2;	//flag
+	(void)	tmp32;		//
+
+	I2C->DR = address_reg;
+	while (!(I2C->SR1 & I2C_SR1_BTF)) ;
+	I2C->DR = data;
+	while (!(I2C->SR1 & I2C_SR1_BTF)) ;
+
+	I2C->CR1 |= I2C_CR1_STOP;
+
+//		//check BUSY
+//		while(I2C2->SR2 & I2C_SR2_BUSY)
+//		{
+//			#ifdef	DEBUG_MI2C
+//			USART_Tx(USART_2, (uint8_t*)" I2C2 (write_1b) busy ");
+//			//delay here
+//			#endif	//DEBUG_I2C
+//
+//			I2C2->CR1 |= I2C_CR1_SWRST;
+//			//delay
+//			delay_ms(10);
+//			I2C2->CR1 &= ~I2C_CR1_SWRST;
+//			//delay
+//			I2C_init(I2C2);
+//			delay_ms(10);
+//		}
+//
+//		I2C2->CR1 |= I2C_CR1_START;
+//		while (!(I2C2->SR1 & I2C_SR1_SB)) ;
+//		I2C2->DR = address_slv;
+//
+//		while (!(I2C2->SR1 & I2C_SR1_ADDR)) ;
+//		tmp32 = I2C2->SR1; 	//clear
+//		(void)	tmp32; 		//ADDR
+//		tmp32 = I2C2->SR2; 	//flag
+//		(void)	tmp32; 		//
+//
+//		I2C2->DR = address_reg;
+//		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
+//		I2C2->DR = data;
+//		while (!(I2C2->SR1 & I2C_SR1_BTF)) ;
+//
+//		I2C2->CR1 |= I2C_CR1_STOP;
+
 }
 
 void	I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t num_of_bytes, uint8_t* buf_Rx)
 {
-#ifdef STM32F103C8T6
-	
 	uint8_t adr, j=0;
 	uint32_t tmp32;
 	
@@ -159,7 +128,7 @@ void	I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_r
 			//delay
 			I2C1->CR1 &= ~I2C_CR1_SWRST;
 			//delay
-			I2C_init(I2C_1);
+			I2C_init(I2C1);
 		}
 		
 		I2C1->CR1 |= I2C_CR1_START;
@@ -217,7 +186,7 @@ void	I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_r
 			//delay
 			I2C2->CR1 &= ~I2C_CR1_SWRST;
 			//delay
-			I2C_init(I2C_2);
+			I2C_init(I2C2);
 		}
 		
 		I2C2->CR1 |= I2C_CR1_START;
@@ -265,9 +234,9 @@ void	I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_r
 	default:
 		break;
 	}
-		
-#endif	//  STM32F103C8T6
 }
+
+#endif	//STM32F103C8T6
 
 
 //uint8_t I2C_read_1b(I2C_TypeDef *I2Cx, uint8_t address_slv, uint8_t address_reg, uint8_t *pdata)

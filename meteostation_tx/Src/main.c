@@ -25,10 +25,14 @@
 #include "main.h"
 #include "delay.h"
 #include "hc_12.h"
+#include "bme280.h"
+#include <stdio.h>
 
 
 
 volatile uint8_t buf_info[100], cnt_info=0;
+int32_t T, H;
+uint32_t P;
 
 
 void LED_init(void);
@@ -47,7 +51,10 @@ void LED_init(void);
 int main(void)
 {
 	LED_init();
+	I2C_init(I2C_2);
 	delay_init(TIM2);
+	delay_ms(100);
+	BME280_init(I2C_2);
 	hc12_init(USART_1);
 
 
@@ -57,6 +64,11 @@ int main(void)
 		delay_ms(500);
 		GPIOC->BSRR |= LED_green_reset;
 		delay_ms(500);
+
+		BME280_read(I2C_2, &T, &H, &P);
+		char buffer[50];
+		sprintf(buffer, "%ld.%ld C \n%ld.%ld %% \n%d.%d לל נע סע  \n", T / 100, (uint32_t)T % 100, \
+						H / 1024, H % 1024 / 10, (int)(P * 3 / 102400), (int)(P * 3 % 102400 / 1000));
 
 //		hc12_info(USART_1);
 //		sprintf(buffer, "%ld.%ld C \n", T / 100, (uint32_t)T % 100);
