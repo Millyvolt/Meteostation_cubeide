@@ -68,7 +68,7 @@ int main(void)
 	delay_ms(100);
 	BME280_init(I2C2);
 	Displ_init(I2C1);
-	hc12_init(USART_1);
+	hc12_init(USART1);
 
 	Displ_clear(I2C1);
 
@@ -92,7 +92,7 @@ int main(void)
 				H / 1024, H % 1024 / 10, (int)(P * 3 / 102400), (int)(P * 3 % 102400 / 1000));
 		GPIOB->BSRR |= LED_red_off;
 		delay_ms(1000);
-//		hc12_info(USART_1);
+//		hc12_info(USART1);
 	}
 }
 
@@ -117,7 +117,7 @@ void USART1_IRQHandler()
 	t = USART1->DR;
 
 	#ifdef	DEBUG_ON
-//	USART_Tx_byte(USART_2, t);
+//	USART_Tx_byte(USART2, t);
 	#endif //DEBUG_ON
 
 	if(t)			//received symbol not null

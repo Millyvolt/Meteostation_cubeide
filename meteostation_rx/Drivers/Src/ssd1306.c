@@ -3,9 +3,6 @@
 
 
 
-extern void	USART_Tx(USART_num USART_number, uint8_t* buf);
-
-
 static void Delay(uint16_t approximately_ms)
 {
 	for (int i = 0; i < approximately_ms * 500; i++) ;

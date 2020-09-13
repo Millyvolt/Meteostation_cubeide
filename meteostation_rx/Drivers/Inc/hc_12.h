@@ -12,8 +12,8 @@
 
 
 
-void	hc12_init(USART_num USART_number);
-void	hc12_info(USART_num USART_number);
+void	hc12_init(USART_TypeDef* USART);
+void	hc12_info(USART_TypeDef* USART);
 
 
 

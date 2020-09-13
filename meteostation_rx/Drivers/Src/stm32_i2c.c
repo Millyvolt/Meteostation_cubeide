@@ -2,9 +2,6 @@
 #include "stm32_i2c.h"
 
 
-extern void	USART_Tx(USART_num USART_number, uint8_t* buf);
-
-
 
 #ifdef STM32F103C8T6
 

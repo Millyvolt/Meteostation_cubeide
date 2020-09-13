@@ -2,7 +2,7 @@
 #include "stm32_spi.h"
 
 
-extern void	USART_Tx(USART_num USART_number, uint8_t* buf);
+extern void	USART_Tx(USART_TypeDef* USART, uint8_t* buf);
 
 
 void	SPI_init(SPI_num SPI_number)		//SPI1
