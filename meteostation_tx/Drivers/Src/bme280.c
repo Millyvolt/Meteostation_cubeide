@@ -10,11 +10,7 @@ uint8_t buf_calib01_25[25];
 uint8_t buf_calib26_32[7];
 
 
-int32_t T, H;
-uint32_t P;
-
-
-/*				To do:
+/*				Todo
  *		Reading tmpr, hum and pressure by one I2C transaction;
  *
  *
@@ -118,38 +114,38 @@ uint32_t BME280_press(void)
 
 }
 
-void BME280_init(I2C_num I2C_number)
+void BME280_init(I2C_TypeDef* I2C)
 {
 	uint8_t data;
 
 	//set filter and stby duration
 	data = 0b10000000;	//set  stby duration 500ms
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CONFIG_BME, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CONFIG_BME, data);
 
 	//normal mode launch
 	data = 0b00000001;	//set humidity oversampling *1
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CTRL_HUM, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CTRL_HUM, data);
 	data = 0b00100111;	//set temperature and pressure oversampling both *1 and turn on normal mode
-	I2C_write_1b(I2C_number, BME280_ADDRESS, CTRL_MEAS, data);
+	I2C_write_1b(I2C, BME280_ADDRESS, CTRL_MEAS, data);
 
 }
 
-void BME280_reset(I2C_num I2C_number)
+void BME280_reset(I2C_TypeDef* I2C)
 {
 
-	I2C_write_1b(I2C_number, BME280_ADDRESS, BME280_RESET, RESET_COMMAND);
+	I2C_write_1b(I2C, BME280_ADDRESS, BME280_RESET, RESET_COMMAND);
 	//delay?
 
 }
 
-void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* ppress)
+void BME280_read(I2C_TypeDef* I2C, int32_t* ptmpr, int32_t* phum, uint32_t* ppress)
 {
-	delay_ms(100); //without delays not working
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, PRESS_MSB, 8, buf_adc);
-	delay_ms(100);
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_01, 25, buf_calib01_25);
-	delay_ms(100);
-	I2C_read_n_b(I2C_number, BME280_ADDRESS, CALIB_26, 8, buf_calib26_32);
+	delay_ms(1); //without delays not working
+	I2C_read_n_b(I2C, BME280_ADDRESS, PRESS_MSB, 8, buf_adc);
+	delay_ms(1);
+	I2C_read_n_b(I2C, BME280_ADDRESS, CALIB_01, 25, buf_calib01_25);
+	delay_ms(1);
+	I2C_read_n_b(I2C, BME280_ADDRESS, CALIB_26, 8, buf_calib26_32);
 	
 #ifdef DEBUG_MODE
 	
@@ -177,12 +173,6 @@ void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* pp
 	*ptmpr = BME280_tmpr();
 	*phum = BME280_hum();
 	*ppress = BME280_press();
-	T = *ptmpr;
-	H = *phum;
-	P = *ppress;
-
-
-	
 }
 
 

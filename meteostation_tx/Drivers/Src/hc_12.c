@@ -4,7 +4,7 @@
 
 
 
-void	hc12_init(USART_num USART_number)
+void	hc12_init(USART_TypeDef* USART)
 {
 	//PA11 - output push-pull 10MHz (SET_pin) for HC-12
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;
@@ -12,24 +12,24 @@ void	hc12_init(USART_num USART_number)
 	GPIOA->CRH |= GPIO_CRH_MODE11_0;
 	GPIOA->BSRR |= SET_pin_set;
 
-	USART_init(USART_number);
+	USART_init(USART);
 
 	NVIC_EnableIRQ(USART1_IRQn);
 }
 
-void	hc12_info(USART_num USART_number)
+void	hc12_info(USART_TypeDef* USART)
 {
 	GPIOA->BSRR |= SET_pin_reset;
 	delay_ms(200);
-	USART_Tx(USART_1, (uint8_t*)"AT");
+	USART_Tx(USART, (uint8_t*)"AT");
 	delay_ms(20);
-	USART_Tx(USART_1, (uint8_t*)"AT+RB");
+	USART_Tx(USART, (uint8_t*)"AT+RB");
 	delay_ms(40);
-	USART_Tx(USART_1, (uint8_t*)"AT+RC");
+	USART_Tx(USART, (uint8_t*)"AT+RC");
 	delay_ms(40);
-	USART_Tx(USART_1, (uint8_t*)"AT+RF");
+	USART_Tx(USART, (uint8_t*)"AT+RF");
 	delay_ms(40);
-	USART_Tx(USART_1, (uint8_t*)"AT+RP");
+	USART_Tx(USART, (uint8_t*)"AT+RP");
 	delay_ms(200);
 	GPIOA->BSRR |= SET_pin_set;
 }

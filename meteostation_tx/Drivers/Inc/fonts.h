@@ -8,12 +8,12 @@
 uint8_t x_adr, y_adr;
 
 
-void PrintString(uint8_t *strng, I2C_num I2C_number);
+void PrintString(uint8_t *strng, I2C_TypeDef* I2C);
 void PrintChar(unsigned char);
-void myputc(uint8_t symbol, I2C_num I2C_number);
-extern void Send_data_dspl(uint8_t data, I2C_num I2C_number);
-extern void X_addr_dspl(uint8_t x_address, I2C_num I2C_number);
-extern void Y_addr_dspl(uint8_t y_address, I2C_num I2C_number);
+void myputc(uint8_t symbol, I2C_TypeDef* I2C);
+//extern void Send_data_dspl(uint8_t data, I2C_num I2C_number);
+//extern void X_addr_dspl(uint8_t x_address, I2C_num I2C_number);
+//extern void Y_addr_dspl(uint8_t y_address, I2C_num I2C_number);
 
 
 uint8_t font [][5] = {	{0x7E, 0x81, 0x81, 0x81, 0x7E},		/*  0		*/

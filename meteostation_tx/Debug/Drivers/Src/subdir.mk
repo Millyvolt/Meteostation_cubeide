@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
@@ -41,24 +42,24 @@ C_DEPS += \
 
 
 # Each subdirectory must supply rules for building sources it contributes
-Drivers/Src/bme280.o: ../Drivers/Src/bme280.c
+Drivers/Src/bme280.o: ../Drivers/Src/bme280.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/bme280.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/delay.o: ../Drivers/Src/delay.c
+Drivers/Src/delay.o: ../Drivers/Src/delay.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/delay.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/fonts.o: ../Drivers/Src/fonts.c
+Drivers/Src/fonts.o: ../Drivers/Src/fonts.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/fonts.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/hc_12.o: ../Drivers/Src/hc_12.c
+Drivers/Src/hc_12.o: ../Drivers/Src/hc_12.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/hc_12.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/ssd1306.o: ../Drivers/Src/ssd1306.c
+Drivers/Src/ssd1306.o: ../Drivers/Src/ssd1306.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/ssd1306.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/stm32_i2c.o: ../Drivers/Src/stm32_i2c.c
+Drivers/Src/stm32_i2c.o: ../Drivers/Src/stm32_i2c.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/stm32_i2c.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/stm32_rcc.o: ../Drivers/Src/stm32_rcc.c
+Drivers/Src/stm32_rcc.o: ../Drivers/Src/stm32_rcc.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/stm32_rcc.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/stm32_spi.o: ../Drivers/Src/stm32_spi.c
+Drivers/Src/stm32_spi.o: ../Drivers/Src/stm32_spi.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/stm32_spi.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/stm32_usart.o: ../Drivers/Src/stm32_usart.c
+Drivers/Src/stm32_usart.o: ../Drivers/Src/stm32_usart.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/stm32_usart.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
-Drivers/Src/xprintf.o: ../Drivers/Src/xprintf.c
+Drivers/Src/xprintf.o: ../Drivers/Src/xprintf.c Drivers/Src/subdir.mk
 	arm-none-eabi-gcc "$<" -mcpu=cortex-m3 -std=gnu11 -g3 -DSTM32 -DSTM32F1 -DSTM32F103C8Tx -DDEBUG -c -I"C:/git_repos/meteostation/meteostation_tx/CMSIS/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Drivers/Inc" -I"C:/git_repos/meteostation/meteostation_tx/Inc" -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Drivers/Src/xprintf.d" -MT"$@" --specs=nano.specs -mfloat-abi=soft -mthumb -o "$@"
 

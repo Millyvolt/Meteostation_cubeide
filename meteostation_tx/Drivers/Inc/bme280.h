@@ -28,18 +28,18 @@
 #define	ID_VALUE		0x60
 
 
-void BME280_read(I2C_num I2C_number, int32_t* ptmpr, int32_t* phum, uint32_t* ppress);
-void BME280_init(I2C_num I2C_number);
-void BME280_reset(I2C_num I2C_number);
+void BME280_read(I2C_TypeDef* I2C, int32_t* ptmpr, int32_t* phum, uint32_t* ppress);
+void BME280_init(I2C_TypeDef* I2C);
+void BME280_reset(I2C_TypeDef* I2C);
 int32_t BME280_tmpr(void);
 int32_t BME280_hum(void);
 uint32_t BME280_press(void);
 
-extern void I2C_write_1b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_reg, uint8_t data);
-extern uint8_t I2C_read_1b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_reg, uint8_t *pdata);
-extern void I2C_read_2b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t* buf_Rx);
-extern void I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t num_of_bytes, uint8_t* buf_Rx);
-extern	void	USART_Tx(USART_num USART_number, uint8_t* buf);
+//extern void I2C_write_1b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_reg, uint8_t data);
+//extern uint8_t I2C_read_1b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_reg, uint8_t *pdata);
+//extern void I2C_read_2b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t* buf_Rx);
+//extern void I2C_read_n_b(I2C_num I2C_number, uint8_t address_slv, uint8_t address_1st_reg, uint8_t num_of_bytes, uint8_t* buf_Rx);
+//extern	void	USART_Tx(USART_num USART_number, uint8_t* buf);
 
 extern	void xfprintf(void(*func)(unsigned char), const char*	fmt, ...);
 extern	void	Debug_out(unsigned char c);

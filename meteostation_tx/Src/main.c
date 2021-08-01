@@ -41,7 +41,7 @@ void LED_init(void);
 /*			ToDo
  *
  * (очистить флаги прерываний перед инициализацией юарта)
- *
+ *	считать кс пакета
  *
  *
  *
@@ -51,11 +51,11 @@ void LED_init(void);
 int main(void)
 {
 	LED_init();
-	I2C_init(I2C_2);
+	I2C_init(I2C2);
 	delay_init(TIM2);
 	delay_ms(100);
-	BME280_init(I2C_2);
-	hc12_init(USART_1);
+	BME280_init(I2C2);
+	hc12_init(USART1);
 
 
 	for(;;)
@@ -65,14 +65,16 @@ int main(void)
 		GPIOC->BSRR |= LED_green_reset;
 		delay_ms(500);
 
-		BME280_read(I2C_2, &T, &H, &P);
-		char buffer[50];
-		sprintf(buffer, "%ld.%ld C \n%ld.%ld %% \n%d.%d мм рт ст  \n", T / 100, (uint32_t)T % 100, \
+		T = 0; H = 0; P = 0;
+		BME280_read(I2C2, &T, &H, &P);
+		char buffer[60];
+		sprintf(buffer, "s%ld.%ld C \n%ld.%ld %% \n%d.%d мм рт ст  \ne", T / 100, (uint32_t)T % 100, \
 						H / 1024, H % 1024 / 10, (int)(P * 3 / 102400), (int)(P * 3 % 102400 / 1000));
 
 //		hc12_info(USART_1);
 //		sprintf(buffer, "%ld.%ld C \n", T / 100, (uint32_t)T % 100);
-		USART_Tx(USART_1, (uint8_t*)"hello");
+//		USART_Tx(USART1, (uint8_t*)"hello");
+		USART_Tx(USART1, (uint8_t*)buffer);
 //		delay_ms(40);
 	}
 }

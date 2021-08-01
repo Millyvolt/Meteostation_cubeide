@@ -16,6 +16,8 @@
 #define LED_green_set	GPIO_BSRR_BS13
 #define LED_green_reset	GPIO_BSRR_BR13
 
+#define I2C_DSPL	I2C1
+
 
 
 #endif /* MAIN_H_ */
